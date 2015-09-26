@@ -1,0 +1,40 @@
+{% extends "secondBase.html" %}
+{% load bootstrap3 %}
+{% load staticfiles %}
+
+{% block menu %}
+    {% include 'hotelier/menu.html' with active='profile'%}
+{% endblock %}
+
+{% block content %}
+    <div class="col-md-7">
+        <div class="panel  panel-default">
+            <div class="panel-heading">
+                پروفایل من
+            </div>
+            <div class="panel-body">
+{#                {{ hotelier.description }}#}
+
+                <strong>نام:</strong> {{ hotelier.first_name }}
+                <hr/>
+                <strong>نام خانوادگی:</strong> {{ hotelier.last_name }}
+                <hr/>
+                <strong>جنسیت:</strong>
+                {% if passenger.gender == "man" %}
+                    مرد
+                {% else %}
+                    زن
+                {% endif %}
+                <hr/>
+                <strong>تلفن تماس :</strong> {{ hotelier.first_phone }}
+                <hr/>
+                <strong>شماره تماس دوم:</strong> {{ hotelier.second_phone }}
+                <hr/>
+                <strong>  تلفن همراه:</strong> {{ hotelier.cell_phone }}
+                <hr/>
+                <a href="/simorgh/profile/edit/" class="btn btn-primary">تغییر مشخصات</a>
+                <a href="/simorgh/changepassword/" class="btn btn-primary">تغییر کلمه عبور</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

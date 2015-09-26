@@ -1,0 +1,316 @@
+{% extends "base.html" %}
+{% block css %}
+    {{ block.super }}
+    <style>
+        body {
+            background: url("/media/background.jpg") fixed !important;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div ng-app="" ng-controller="HomeSearch" ng-init="init()" >
+
+        <div class="panel panel-default">
+            <ul class="panel-heading, nav nav-tabs" >
+
+                <li class="active"><a href="#hotel" data-toggle="tab">
+                    جستجو هتل
+                </a></li>
+                <li><a href="#room" data-toggle="tab">
+                    جستجو اتاق
+                </a></li>
+            </ul>
+            <div class="panel-body, tab-content">
+                <div class="tab-pane fade in active" id="hotel">
+                    <div class="container">
+                        <div class="row">
+                            <form role="form" ng-submit="hotelSearch()"  id="hotelSearch">
+                                {% csrf_token %}
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" ng-model="hotel_name" placeholder="نام هتل">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" ng-model="city" placeholder="شهر">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>امکانات جانبی:</label>
+                                        <div class="checkbox">
+                                            <label><input type="checkbox" value="" ng-model="pool"> استخر</label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label><input type="checkbox" value="" ng-model="breakfast">صبحانه</label>
+                                        </div>
+                                        <div class="checkbox disabled">
+                                            <label><input type="checkbox" value="" ng-model="wifi">  اینترنت  </label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label><input type="checkbox" value="" ng-model="cafe">کافه و رستوران</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        {% comment %}@declare ng-model="star"{% endcomment %}
+
+                                        <label for="star">ستاره:</label>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <input type="number" class="form-control" ng-model="min_star" placeholder=" از ">
+                                            </div>
+                                            <div  class="col-md-4">
+                                                <input type="number" class="form-control" ng-model="max_star" placeholder=" تا ">
+                                            </div>
+                                        </div>
+                                        <hr/>
+                                        <label for="star">امتیاز کاربران:</label>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <input type="number" class="form-control" ng-model="min_point" placeholder=" از ">
+                                            </div>
+                                            <div  class="col-md-4">
+                                                <input type="number" class="form-control" ng-model="max_point" placeholder=" تا ">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+
+                                    <div class="col-md-5"></div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label for="hotel_sort"> مرتب‌سازی براساس: </label>
+                                            <select class="form-control"  id="hotel_sort" >
+                                                <option selected="1" value="1">
+                                                    ستاره
+                                                </option>
+                                                <option value="2">
+                                                    امتیاز
+                                                </option>
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-1">
+                                        </br>
+                                        <input type="submit" value=" جستجو " class="btn btn-primary">
+                                    </div>
+                                    <div class="col-md-1">
+                                        </br>
+                                        <button type="button" class="btn btn-primary" ng-click="allHotels()">
+نمایش همه هتل‌ها
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <hr>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="room">
+                    <div class="container">
+                        <div class="row">
+                            <form ng-submit="roomSearch()"  id="roomSearch">
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" ng-model="room_hotel" placeholder="نام هتل">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" ng-model="room_city" placeholder="شهر">
+                                    </div>
+                                    <hr/>
+                                    <div class="form-group" class="col-md-1">
+                                        <label for="star">ستاره:</label>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <input type="number" class="form-control" ng-model="room_min_star" placeholder=" از ">
+                                            </div>
+                                            <div  class="col-md-4">
+                                                <input type="number" class="form-control" ng-model="room_max_star" placeholder=" تا ">
+                                            </div>
+                                        </div>
+                                        <hr/>
+                                        <label for="star">امتیاز کاربران:</label>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <input type="number" class="form-control" ng-model="room_min_point" placeholder=" از ">
+                                            </div>
+                                            <div  class="col-md-4">
+                                                <input type="number" class="form-control" ng-model="room_max_point" placeholder=" تا ">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>امکانات جانبی:</label>
+                                        <div class="checkbox">
+                                            <label><input type="checkbox" value="" ng-model="room_pool"> استخر</label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label><input type="checkbox" value="" ng-model="room_breakfast">صبحانه</label>
+                                        </div>
+                                        <div class="checkbox disabled">
+                                            <label><input type="checkbox" value="" ng-model="room_wifi">  اینترنت  </label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label><input type="checkbox" value="" ng-model="room_cafe">کافه و رستوران</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <!--
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" ng-model="area" placeholder="حداقل متراژ اتاق : متر">
+                                    </div>
+                                    -->
+                                    <div class="form-group">
+                                        <input type="number" class="form-control" ng-model="capacity" placeholder="حداقل ظرفیت اتاق : نفر">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <input type="number" class="form-control" ng-model="cost" placeholder=" حداکثر قیمت اتاق: ریال ">
+                                    </div>
+
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>امکانات جانبی اتاق:</label>
+                                        <div class="checkbox">
+                                            <label><input type="checkbox" value="" ng-model="tv"> تلوزیون</label>
+                                        </div>
+
+                                        <div class="checkbox disabled">
+                                            <label><input type="checkbox" value="" ng-model="extra_bed"> تخت  اضافه  </label>
+                                        </div>
+                                        <div class="checkbox disabled">
+                                            <label><input type="checkbox" value="" ng-model="kitchen"> آشپزخانه</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+
+                                    <div class="col-md-2">
+<br> <br> <br> <br> <br>
+
+                                        <div class="form-group">
+                                            <label for="room_sort"> مرتب‌سازی براساس: </label>
+                                            <select class="form-control" id="room_sort" >
+                                                <option selected="1" value="1">
+                                                    ستاره
+                                                </option>
+                                                <option value="2">
+                                                    امتیاز
+                                                </option>
+                                                <option value="3">
+                                                    قیمت
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <br> <br> <br> <br> <br> <br>
+                                        <input type="submit" class="btn btn-primary" value=" جستجو ">
+
+                                    </div>
+                                    <div class="col-md-1">
+                                        <br> <br> <br> <br> <br> <br>
+                                        <button type="button" ng-click="allRooms()" class="btn btn-primary">نمایش همه اتاقها</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <hr>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-10">
+                <div class="row">
+                    <div class="col-sm-6 col-md-4" ng-repeat="Obj in getCurrentList().obj_list">
+                        <div class="thumbnail" >
+                            <a href=[[Obj.link]]>
+                                <div class="img-wrapper" style="width: 300px" >
+                                    <img ng-src=[[Obj.img_url]]>
+                                </div>
+                            </a>
+                            <div class="caption" style="text-align: center">
+                                    <a href=[[Obj.link]]>
+                                            [[Obj.hotel_name | limitTo:22 ]]
+                                    </a>
+                            </div>
+                            <div class="row">
+
+                                <div class="col-md-1"></div>
+                                <div class="col-md-5">
+                                    <p style="float: right">  ستاره: </p>
+                                </div>
+                                <div class="col-md-5">
+                                    <div ng-repeat="i in renge">
+                                        <span  ng-if=" i<=Obj.star" class="glyphicon glyphicon-star" style="float: left"></span>
+                                        <span ng-if=" i>Obj.star" class="glyphicon glyphicon-star-empty" style="float: left"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-1"></div>
+                            </div>
+
+                            <div class="row">
+
+                                <div class="col-md-1"></div>
+                                <div class="col-md-5">
+                                    <p style="float: right"> امتیاز </p>
+                                </div>
+                                <div class="col-md-5">
+                                    <div ng-repeat="i in renge">
+                                        <span  ng-if=" i<=Obj.point" class="glyphicon glyphicon-star" style="float: left"></span>
+                                        <span ng-if=" i>Obj.point" class="glyphicon glyphicon-star-empty" style="float: left"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-1"></div>
+                            </div>
+                            <div ng-if="mode == 2" class="row">
+                                <div class="col-md-1"></div>
+                                <div style="text-align: right" class="col-md-5"> هزینه هر شب: </div>
+                                <div style="text-align: left" class="col-md-5">
+                                    [[Obj.price]]
+                                    <label>
+                                        ریال
+                                    </label>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                <br>
+                </div>
+                <div class="row" style="text-align: center">
+
+                    <ul class="pagination">
+                    <li ng-repeat="page in pages" ng-class="{'active': getActive(page)}">
+                        <a href="#" ng-click="changePage(page.pageNum)">
+                            [[page.pageNum]]
+                        </a>
+                    </li>
+                </ul>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

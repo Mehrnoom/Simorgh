@@ -1,0 +1,73 @@
+{% extends "secondBase.html" %}
+{% load bootstrap3 %}
+{% load staticfiles %}
+
+{% block js %}
+    {{ block.super }}
+    <script>
+
+        function cancleReservation(reserve_id) {
+            $.ajax({
+                url: '/simorgh/cancle/reservation/',
+                method: 'GET',
+                dataType: 'json',
+                data : {
+                    "reserve_id" : reserve_id
+
+                },
+                success: function(data){
+                    if(data == 1) {
+                        child = document.getElementById(reserve_id)
+                        child.parentNode.removeChild(child)
+                    }
+                }
+            })
+        }
+    </script>
+{% endblock %}
+
+{% block menu %}
+    {% include 'passenger/menu.html' with active='reservation'%}
+{% endblock %}
+
+{% block content %}
+<div class="panel panel-default">
+    <div class="panel-heading">
+رزروهای من
+    </div>
+    <div class="panel-body">
+        <table class="table">
+            <thead>
+                <th>نام هتل</th>
+                <th>نوع اتاق</th>
+                <th>تاریخ شروع رزرو</th>
+                <th>تاریخ پایان رزرو</th>
+                <th>هزینه کل</th>
+                <th>وضعیت پرداخت</th>
+                <th></th>
+                <th></th>
+            </thead>
+            <tbody>
+            {% for reserve in reservations %}
+                <tr id="{{ reserve.id }}">
+                    <th>{{ reserve.room.hotel }}</th>
+                    <th>{{ reserve.room.type }}</th>
+                    <th>{{ reserve.start_date }}</th>
+                    <th>{{ reserve.end_date }}</th>
+                    <th>{{ reserve.total_cost }}</th>
+                    {% if reserve.status == 0 %}
+                        <th>پرداخت نشده</th>
+                    {% else %}
+                        <th>پرداخت شده</th>
+                    {% endif %}
+                    {% if reserve.status == 0 %}
+                        <th><a href = "/simorgh/bank/1/{{ reserve.id }}/" class="btn btn-primary" >پرداخت</a></th>
+                        <th ><a onclick="cancleReservation({{ reserve.id }})" class="btn btn-primary">لغو</a></th>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

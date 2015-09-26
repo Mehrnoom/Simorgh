@@ -1,0 +1,127 @@
+{% extends "hotel/add_hotel.html" %}
+{% load bootstrap3 %}
+{% load staticfiles %}
+
+{% block js %}
+    {{ block.super }}
+    <script>
+
+        function removeRoom(room_id) {
+            $.ajax({
+                        url: '/simorgh/remove/room',
+                        methof: 'GET',
+                        dataType: 'json',
+                        data : {
+                            "room_id" : room_id
+
+                        },
+                        success: function(data){
+                            if(data == 1) {
+                                child = document.getElementById(room_id)
+                                child.parentNode.removeChild(child)
+                            }
+                        }
+                    })
+        }
+        // wait for the DOM to be loaded
+        $(document).ready(function(data) {
+            // bind 'myForm' and provide a simple callback function
+            $('#photoForm').ajaxForm({
+
+                    success: function(data, statusText, xhr, $form) {
+                        $('#photoContainer').append('<div class="col-md-3 hotel-img-wrapper" id="' + data.imageId +'"><img class="thumbnail img-responsive" src="'+ data.url +'"><button onclick="removePhoto(' + data.imageId + ')">del</button></div>')
+                    }
+            });
+        });
+
+        function removePhoto(imageID) {
+            console.log(imageID)
+            $.ajax({
+        url: "/simorgh/remove_photo",
+        type: 'get',
+        dataType: 'json',
+        data: {
+        "imageId": imageID,
+        "type": "{{ type }}"
+    },
+        success: function(data){
+            console.log(data)
+            child = document.getElementById(imageID);
+            child.parentNode.removeChild(child)
+        },
+        error: function() {
+            alert("no")
+        }
+        // ...
+    });
+        }
+    </script>
+{% endblock %}
+
+
+{% block photo %}
+    <div class="row">
+        <form role="form" action="/simorgh/add/{{ type }}_photo/{{ id }}/" method="post" enctype="multipart/form-data" id="photoForm">
+            {% csrf_token %}
+            {{ photoForm.as_p }}
+        </form>
+    </div>
+    <div class="row">
+        <div class="col-md-8"></div>
+        <div class="col-md-2"><input type="submit" form="photoForm" class="btn btn-default" value="افزودن عکس"></div>
+    </div>
+
+    <div class="row top-buffer" id="photoContainer">
+        {% for image in images %}
+            <div class="col-md-3 col-xs-6 hotel-img-wrapper" id="{{ image.id }}" >
+                <img class="thumbnail img-responsive" src="{{ image.photo.url }}">
+                <button onclick="removePhoto({{ image.id }})">del</button>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block rest %}
+    {% if type == 'hotel' %}
+    <div class="row">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+        لیست اتاقهای هتل
+            </div>
+            <div class="panel-body">
+                <table class="table">
+                    <thead>
+                        <th>نوع اتاق</th>
+                        <th>متراژ</th>
+                        <th>قیمت هر شب</th>
+                        <th></th>
+                        <th></th>
+                    </thead>
+                    <tbody>
+                    {% for room in rooms %}
+                        <tr id="{{ room.id }}">
+                            <th>
+                                <img src="/media/slide1.jpg">
+                                <a href="/simorgh/profile/room/{{ room.id }}">{{ room.type }}</a>
+                            </th>
+                            <th>{{ room.area }}</th>
+                            <th>{{ room.cost }}</th>
+                            <th><a href="/simorgh/edit/room/{{ room.id }}/" class="btn btn-primary">ویرایش اتاق</a></th>
+                            <th><a onclick="removeRoom({{ room.id }})" class="btn btn-primary">حذف اتاق</a></th>
+                        </tr>
+                    {% endfor %}
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th><a class="btn btn-primary" href="/simorgh/add/room/{{ id }}/">اضافه کردن اتاق</a></th>
+
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+{% endblock %}

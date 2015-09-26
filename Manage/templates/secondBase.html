@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load bootstrap3 %}
+{% load staticfiles %}
+
+{% block css %}
+    {{ block.super }}
+    <link href="{% static 'lib/jquery.imgareaselect-0.9.10/css/imgareaselect-animated.css' %}" rel="stylesheet">
+    <link href="{% static 'lib/jquery.imgareaselect-0.9.10/css/imgareaselect-default.css' %}" rel="stylesheet">
+    <link href="{% static 'lib/jquery.imgareaselect-0.9.10/css/imgareaselect-deprecated.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block js %}
+    {{ block.super }}
+    <script src="{% static 'lib/jquery.imgareaselect-0.9.10/scripts/jquery.imgareaselect.js' %}"></script>
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-3">
+            {% block menu %}
+{#                {% include 'passenger/menu.html' with active='add'%}#}
+            {% endblock %}
+        </div>
+        <div class="col-md-9">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </div>
+    {% block rest %}
+    {% endblock %}
+
+
+{% endblock %}

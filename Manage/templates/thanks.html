@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block css %}
+    {{ block.super }}
+{% endblock %}
+
+{% block body %}
+    <html>
+         <head>
+             <meta charset="UTF-8">
+             <meta http-equiv="refresh" content="2; {{ redir }}">
+             <script type="text/javascript">
+                 window.location.href = {{ redir }}
+             </script>
+             <title>پیغام</title>
+         </head>
+         <body>
+         <div class="panel panel-default ">
+             <div class="panel-heading" >
+                 پیغام
+             </div>
+             <div class="panel-body">
+                {{ message }}
+             </div>
+         </div>
+         </body>
+    </html>
+{% endblock %}

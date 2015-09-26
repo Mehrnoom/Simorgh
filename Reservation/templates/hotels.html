@@ -1,0 +1,46 @@
+
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block css %}
+    {{ block.super }}
+{% endblock %}
+
+{% block body%}
+<div class="container" >
+        {% include "search.html" %}
+</div>
+
+    <div class="row">
+        {% for hotel in hotels_list %}
+            <div class="col-md-3">
+                <div class="thumbnail">
+                    <a href="profile/hotel/{{ hotel.id }}">
+                        <div class="img-wrapper">
+                            <img src={{ hotel.img.url }}>
+                        </div>
+                    </a>
+                    <div class="caption">
+                        <label>
+                            <a href="profile/hotel/{{ hotel.id }}/">
+                            {{ hotel.name }}
+                            </a>
+                        </label>
+                        <p>
+                           {% for i in "12345" %}
+                               {% if forloop.counter < hotel.star_number %}
+                                   <span class="glyphicon glyphicon-star"></span>
+                               {% else %}
+                                   <span class="glyphicon glyphicon-star-empty"></span>
+                               {% endif %}
+                           {% endfor %}
+                        </p>
+                        <a href="#" class="btn btn-primary btn-sm btn-block" role="button">
+                            مشاهده پروفایل
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

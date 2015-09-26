@@ -1,0 +1,59 @@
+{% extends "secondBase.html" %}
+{% load bootstrap3 %}
+{% load staticfiles %}
+
+{% block js %}
+    {{ block.super }}
+    <script>
+
+        function deleteHotel(hotel_id) {
+            $.ajax({
+                        url: '/simorgh/remove/hotel',
+                        method: 'GET',
+                        dataType: 'json',
+                        data : {
+                            "hotel_id" : hotel_id
+
+                        },
+                        success: function(data){
+                            if(data == 1) {
+                                child = document.getElementById(hotel_id)
+                                child.parentNode.removeChild(child)
+                            }
+                        }
+                    })
+        }
+    </script>
+{% endblock %}
+
+{% block menu %}
+    {% include 'hotelier/menu.html' with active='hotels_list'%}
+{% endblock %}
+
+{% block content %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+هتلهای من
+        </div>
+        <div class="panel-body">
+            <table class="table">
+                <thead>
+                <th>نام هتل</th>
+                <th>آدرس</th>
+                <th></th>
+                <th></th>
+                </thead>
+                <tbody>
+                {% for hotel in hotels %}
+                    <tr id="{{ hotel.id }}">
+                        <th><a href="/simorgh/profile/hotel/{{ hotel.id }}/">{{ hotel.name }}</a></th>
+                        <th>{{ hotel.address }}</th>
+                        <th><a href="/simorgh/edit/hotel/{{ hotel.id }}" class="btn btn-primary">ویرایش</a></th>
+                        <th ><a onclick="deleteHotel({{ hotel.id }})" class="btn btn-primary">حذف</a></th>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,224 @@
+@font-face
+{
+  font-family: Nassim;
+  src: url('../font/BYekan.ttf')
+}
+
+@fs : 15px;
+@fs_sm: 13px;
+
+body {
+  background-color: #eee;
+  direction: rtl;
+  font-size: @fs !important;
+}
+
+* {
+  font-family: Nassim;
+  font-weight: normal;
+}
+
+h3 {
+  font-family: Nassim;
+  font-weight: bold;
+}
+
+.navbar-brand{
+  font-family: Arial !important;
+  color: #ffffff !important;
+  font-weight: bold;
+}
+
+//Overriding Bootstrap for RTL support
+.navbar-nav > li > a {
+  padding-bottom: 17px !important;
+  padding-top: 17px !important;
+}
+
+.btn, .navbar *{
+  font-size: @fs_sm !important;
+}
+
+.carousel-inner {
+  .item {
+    background-color: gray;
+    height: 300px;
+    width: 100%;
+  }
+}
+
+div .panel {
+  &.slider {
+    .panel-body {
+      padding: 0;
+    }
+  }
+}
+
+.container{
+  margin-top:70px;
+}
+
+.footer {
+  width: auto;
+  text-align: center;
+  border-top: 1px solid lightgrey;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+.thumbnail {
+  .img-wrapper{
+    background-color: #D3D3D3;
+    display: table-cell;
+    height: 176px;
+    text-align: center;
+    vertical-align: middle;
+    width: 220px;
+    img {
+      max-height: 161px;
+      margin: auto;
+      max-width: 220px;
+    }
+  }
+}
+
+.product-img-wrapper{
+  background-color: #D3D3D3;
+  display: block;
+  height: 176px;
+  text-align: center;
+  width: 100%;
+  img {
+    max-height: 176px;
+    margin: auto;
+    max-width: 220px;
+  }
+}
+
+.hotel-img-wrapper {
+  display: block;
+  height: 70px;
+  img {
+    height: 60px;
+    margin: auto;
+    width: 60px;
+  }
+}
+
+
+.tag-group {
+  padding: 0 !important;
+  .tag-group-item {
+    list-style-type: none;
+    padding: 10px;
+    border: 1px solid lightgrey;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    a {
+      float: left;
+      padding: 3px;
+    }
+  }
+}
+
+.wait-list {
+  position: fixed;
+  width: 300px;
+  left: 20px;
+  bottom: 20px;
+  .wait-item {
+    width: 100%;
+    background-color: #ffeda5;
+    border: 1px solid darken(#ffeda5, 10%);
+    padding: 10px;
+    margin-top: 10px;
+    &.error {
+      background-color: #ffc5d9;
+      border: 1px solid darken(#ffc5d9, 10%);
+    }
+    &.success {
+      background-color: #94d099;
+      border: 1px solid darken(#94d099, 10%);
+    }
+  }
+}
+
+.inline-radio{
+  display: inline-block;
+  margin: 5px !important;
+
+}
+
+.carousel a h3{
+  color: white !important;
+}
+
+.panel-body.list {
+  padding: 0;
+  a {
+    display: block;
+    padding: 10px;
+    &:hover {
+      background-color: #EEE;
+      text-decoration: none;
+    }
+    &.active {
+      background-color: #F5F5F5;
+      border-right: 3px solid #4198ff;
+    }
+  }
+}
+
+.padding-none {
+  padding: 0 !important;
+}
+
+.btn.sm {
+  font-size: 15px !important;
+}
+
+.panel.panel-default {
+  .panel-heading {
+    cursor: pointer;
+    &:hover {
+      background-image: linear-gradient(to bottom, lighten(#4198ff, 10%) 0px, #4198ff 100%) !important;
+      color: white;
+    }
+  }
+}
+
+.form-group {
+  &.half-right {
+    width: 48%;
+    float: right;
+  }
+  &.half-left {
+    width: 48%;
+    float: left;
+  }
+}
+
+.top-buffer {
+  margin-top:20px;
+}
+
+
+.slider {
+  width: 100%;
+  height: 400px;
+
+  img {
+    width: 100%;
+    height: 400px;
+
+  }
+}
+
+
+#map-canvas {
+  	width: 100%;
+  	height: 300px;
+	margin: 0;
+	padding: 15px;
+}

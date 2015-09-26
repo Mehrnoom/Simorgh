@@ -1,0 +1,64 @@
+{% extends "secondBase.html" %}
+{% load bootstrap3 %}
+{% load staticfiles %}
+
+{% block menu %}
+    {% include 'hotelier/menu.html' with active='commision'%}
+{% endblock %}
+
+{% block content %}
+    <div class="col-md-7">
+        <div class="panel  panel-default">
+            <div class="panel-heading">
+                اطلاعات کارمزد
+            </div>
+            <div class="panel-body">
+                <label>گزارش کارمزدها</label>
+                <table class="table">
+                    <thead>
+                        <th>تاریخ شروع</th>
+                        <th>تاریخ پایان</th>
+                        <th>مجموع کارمزد</th>
+                        <th>وضعیت پرداخت</th>
+                    </thead>
+                    <tbody>
+                        {% for commision in commisions %}
+                            <tr>
+                                <th>{{ commision.start_date }}</th>
+                                {% if commision.status == 0 %}
+                                    <th>امروز</th>
+                                {% else %}
+                                    <th>{{ commision.end_date }}</th>
+                                {% endif %}
+                                <th>{{ commision.total }}</th>
+                                {% if commision.status %}
+                                    <th>پرداخت شده</th>
+                                {% else %}
+                                    <th>پرداخت نشده</th>
+                                {% endif %}
+
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <hr/>
+                <div class="container">
+                    {% if last_commision == None %}
+                        <label>کارمزد پرداخت نشده ای برای شما وجود ندارد.</label>
+                    {% else %}
+                        <div class="row">
+                            <strong> هتلدار گرامی </strong>
+                            {{ last_commision.hotelier.first_name }} {{ last_commision.hotelier.last_name }}
+                        </div>
+                        <div class="row">
+                            <strong>مبلغ کارمزد این ماه شما:</strong>
+                            {{ last_commision.total }}
+                        </div>
+                    {% endif %}
+                </div>
+                <hr/>
+                <a href = "/simorgh/bank/0/{{ last_commision.id }}/"class="btn btn-primary" >پرداخت</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

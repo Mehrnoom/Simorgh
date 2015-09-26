@@ -1,0 +1,90 @@
+﻿body{margin:0px;font-family:tahoma;font-size:8px;background-color:#E1E5EA;color:Navy;}.MainTable{left:0px;width:100%;top:0px;HEIGHT:100%;}.CaptionBox{background-color:#FFFCD5;font-weight:bold;font-family:Tahoma;font-size:18px;color:#334455;text-align:center;height:12px;width:98%;}.FooterBox{background-color:#778899;font-family:tahoma;font-size:12px;color:#FFFFFF;height:20px;text-align:center;}.LogoBox{height:70px;background-color:#FFFCD5;width:70px;text-align:center;}.SeparatorBox{background-color:#005480;font-family:tahoma;font-size:12px;color:#FFFFFF;height:2px;text-align:center;}table.MsgBox{font-size:12px;width:500px;color:#005480;height:60px;}table.PGW{border:#778899 thin solid;font-size:12px;width:500px;background-color:#B0BCC3;}.InputText{font-size:12px;font-family:Tahoma;color:#000000;background-color:#FEFEFE;width:50px;}.InputText2{font-size:12px;font-family:Tahoma;color:#000000;background-color:#FEFEFE;width:200px;AUTOCOMPLETE:off;}.InputText3{font-size:12px;font-family:Tahoma;color:#000000;background-color:#FEFEFE;width:100px;}td.PGW1{font-size:12px;font-family:Tahoma;background-color:#FAFCE5;color:#000000;padding:2 2 2 2;height:28;width:30%;}td.PGW2{font-size:12px;font-family:Tahoma;background-color:#FAFCE5;color:#000000;padding:2 2 2 2;height:28;width:70%;}td.PGWHeader{font-size:12px;font-family:Tahoma;font-weight:bold;color:#FEFEFE;background-color:#005480;padding:2 2 2 2;height:30;}td.PGWFooter{border-top:#005480 1 solid;font-size:12px;font-family:Tahoma;background-color:#E1E5EA;padding:2 2 2 2;height:40;}.Button_Public{padding-right:2px;padding-left:2px;font-size:11px;font-family:Tahoma;font-weight:bold;background-color:#005480;color:#FEFEFE;height:20;width:70;}.L_Span{font-size:10px;font-family:Tahoma;color:#330000;}.RefreshCaptchaImg{background-image:url("AllImages.png");background-position:-210px 101px;cursor:pointer;height:23px;text-align:center;vertical-align:middle;visibility:visible;width:24px;margin-bottom:10px;display:inline-block;}.CaptchInfo{color:Red;}.CaptchImg{border-width:1px;border-style:solid;width:200px;height:50px;}.WrapStyle{white-space:normal;}.NoWrapStyle{white-space:nowrap;}.cellMsg{text-align: justify;white-space:normal;}.logoStyle{width: 180px;}.warnStyle{color: Red;text-align: center;}.footerOwner{height: 41px;}.InputTextDisabled{font-size:12px;font-family:Tahoma;color:#000000;background-color:#E1E5EA;width:50px;}
+/* Images*/
+.parsianlogo{background-image:url(AllImages.png);width:60px;height:70px;background-position:-84px 0px;}.peclogo{background-image:url(AllImages.png);width:89px;height:70px;background-position:-144px 0;}.shetablogo{background-image:url(AllImages.png);width:80px;height:56px;background-position:0px 0px;}.parsianlogo{background-image:url(AllImages.png);width:60px;height:70px;background-position:-84px 0px;}.refreshicon{background-image:url(AllImages.png);width:24px;height:24px;background-position:-93px -69px;}
+/*Key Pad*/
+button.keypad-trigger {
+	width: 25px;
+	padding: 0px;
+}
+img.keypad-trigger {
+	margin: 2px;
+	vertical-align: middle;
+}
+.keypad-popup, .keypad-inline, .keypad-key, .keypad-special {
+	font-family: Arial,Helvetica,sans-serif;
+	font-size: 14px;
+}
+.keypad-popup {
+	display: none;
+	z-index: 10;
+	margin: 0;
+	padding: 0;
+	background-color: #fff;
+	color: #000;
+	border: 1px solid #888;
+	-moz-border-radius: 0.25em;
+	-webkit-border-radius: 0.25em;
+	border-radius: 0.25em;
+}
+.keypad-keyentry {
+	display: none;
+}
+.keypad-inline {
+	background-color: #fff;
+	border: 1px solid #888;
+	-moz-border-radius: 0.25em;
+	-webkit-border-radius: 0.25em;
+	border-radius: 0.25em;
+}
+.keypad-disabled {
+	position: absolute;
+	z-index: 100;
+	background-color: white;
+	opacity: 0.25;
+	filter: alpha(opacity=25);
+}
+.keypad-rtl {
+	direction: rtl;
+}
+.keypad-prompt {
+	clear: both;
+	text-align: center;
+}
+.keypad-prompt.ui-widget-header {
+	margin: 0.125em;
+}
+.keypad-row {
+	width: 100%;
+}
+.keypad-space {
+	display: inline-block;
+	margin: 0.125em;
+	width: 2em;
+}
+.keypad-half-space {
+	display: inline-block;
+	margin: 0.125em 0.0625em;
+	width: 1em;
+}
+.keypad-key, .keypad-special {
+	margin: 0.125em;
+	padding: 0em;
+	width: 2em;
+	text-align: center;
+	cursor: pointer;
+}
+.keypad-special {
+	width: 4.25em;
+}
+.keypad-spacebar {
+	width: 13.25em;
+}
+.keypad-tab {
+	width: 2em;
+}
+.keypad-clear, .keypad-back, .keypad-close, .keypad-shift {
+	/*font-weight: bold;*/
+}
+
+/*Page Style*/
+.titleStyle{margin-top:30px;margin-right:15px;width:180px;}.dynatip{background:url(AllImages.png) no-repeat;background-position:-5px -72px;display:none;color:#fff;font-size:12px;width:200px;height:107px;text-align:center;}.cellAlert{color:#363636;background-color:#FBF9EE;border:1px solid #CD0A0A;border-width:4px 1px 1px 1px;margin-top:4px;height:30px;padding-top:4px;width:500px;white-space:normal;}

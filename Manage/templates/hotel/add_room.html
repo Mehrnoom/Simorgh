@@ -1,0 +1,25 @@
+{% extends "secondBase.html" %}
+{% load bootstrap3 %}
+{% load staticfiles %}
+
+{% block menu %}
+    {% include 'hotelier/menu.html' with active='add_hotel'%}
+{% endblock %}
+
+{% block content %}
+    <div class="col-md-7">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+افزودن اتاق
+            </div>
+            <div class="panel-body">
+                {% include 'form.html' with form=form value="افزودن"%}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-5">
+        {% block photo %}
+        {% endblock %}
+    </div>
+
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block css %}
+    {{ block.super }}
+{% endblock %}
+
+{% block body %}
+<div class="col-md-2"></div>
+<div class="col-md-8">
+<div class="panel panel-default ">
+            <div class="panel-heading" >
+ورود
+            </div>
+            <div class="panel-body">
+                    <div class="col-md-3"></div>
+                    {% include 'form.html' with form=form value=value%}
+                    {{ message }}
+                    <div class="col-md-3"></div>
+
+                    {% if option != 0 %}
+                        <div class="row">
+                        <div class="col-md-9"></div>
+                        <div class="col-md-3"><a style="width: 100%" href="/simorgh/sendusername" class="btn btn-default">فراموشی رمز عبور</a></div>
+                        </div>
+
+                    {% endif %}
+            </div>
+
+</div>
+</div>
+<div class="col-md-2"></div>
+{% endblock %}

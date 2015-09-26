@@ -1,0 +1,324 @@
+{% extends "secondBase.html" %}
+{% load bootstrap3 %}
+{% load staticfiles %}
+
+{% block js %}
+    {{ block.super }}
+    <script>
+        function report1() {
+            console.log($('#hotel_id').val())
+            $.ajax({
+                url: '/simorgh/ajax/reserve_chart',
+                        method: 'GET',
+                        dataType: 'json',
+                        data : {
+                            "hotel_id" : $('#hotel_id').val()
+
+                        },
+                        success: function(result){
+
+                            var y_data = [];
+                            var i = 0;
+                            for(key in result.res1) {
+                                y_data[i] = result.res1[key]
+                                i++
+                            }
+                            console.log(y_data)
+                            var data1 = {
+                                labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+                                datasets: [
+                                    {
+                                        label: "My First dataset",
+                                        fillColor: "rgb(128,128,128,0.75)",
+                                        strokeColor: "rgba(220,220,220,0.8)",
+                                        highlightFill: "rgb(128,128,128,0.75)",
+                                        highlightStroke: "rgba(220,220,220,1)",
+                                        data: y_data
+                                    }
+                                ]
+                            };
+                        var ctx = $("#myChart1").get(0).getContext("2d");
+                        var myNewChart = new Chart(ctx).Line(data1);
+
+                        i = 0
+                        for(key in result.res2) {
+                                y_data[i] = result.res2[key]
+                                i++
+                            }
+                            console.log(result.res2)
+                            var data12 = {
+                                labels: Object.keys(result.res2),
+                                datasets: [
+                                    {
+                                        label: "My First dataset",
+                                        fillColor: "rgb(128,128,128,0.75)",
+                                        strokeColor: "rgba(220,220,220,0.8)",
+                                        highlightFill: "rgb(128,128,128,0.75)",
+                                        highlightStroke: "rgba(220,220,220,1)",
+                                        data: y_data
+                                    }
+                                ]
+                            };
+                            var ctx = $("#myChart2").get(0).getContext("2d");
+                            var myNewChart = new Chart(ctx).Bar(data12);
+                        }
+            })
+        }
+
+        function report2() {
+
+            $.ajax({
+                url: '/simorgh/ajax/income_chart',
+                        method: 'GET',
+                        dataType: 'json',
+                        data : {
+                            "hotel_id" : $('#hotel_id').val()
+
+                        },
+                        success: function(result){
+                            console.log(result)
+                            var y_data = [];
+                            var i = 0;
+                            for(key in result) {
+                                y_data[i] = result[key]
+                                i++
+                            }
+                            console.log(y_data)
+                            var data3 = {
+                                labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+                                datasets: [
+                                    {
+                                        label: "My First dataset",
+                                        fillColor: "rgb(128,128,128,0.75)",
+                                        strokeColor: "rgba(220,220,220,0.8)",
+                                        highlightFill: "rgb(128,128,128,0.75)",
+                                        highlightStroke: "rgba(220,220,220,1)",
+                                        data: y_data
+                                    }
+                                ]
+                            };
+                        var ctx = $("#myChart3").get(0).getContext("2d");
+                        var myNewChart = new Chart(ctx).Bar(data3);
+
+                        }
+            })
+        }
+    </script>
+
+{% endblock %}
+
+
+{% block menu %}
+    {% include 'hotelier/menu.html' with active='report'%}
+{% endblock %}
+
+{% block content %}
+    <div class="panel panel-default">
+        <ul class="panel-heading, nav nav-tabs" >
+            <li role="presentation" class="active"><a href="#reserves" aria-controls="reserves" role="tab" data-toggle="tab">گزارش رزروها</a></li>
+            <li role="presentation"><a href="#income" aria-controls="income" role="tab" data-toggle="tab">گزارش درآمدها</a></li>
+            <li role="presentation"><a href="#comments" aria-controls="comments" role="tab" data-toggle="tab">گزارش نظرات</a></li>
+        </ul>
+
+        <div class="panel-body, tab-content">
+            <div class="tab-pane fade in active" id="reserves">
+                <br/>
+                <div class="row">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-6">
+                        <label>برای نمایش دقیق گزارش، هتل مورد نظر را انتخاب کنید:</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <select class="form-control" id="hotel_id">
+                                {% for hotel in hotels %}
+                                   <option value={{ hotel.id }}>{{ hotel.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2"></div>
+                    <div class="col-md-2">
+                        <a onclick="report1()" class="btn btn-primary">دریافت گزارش</a>
+                    </div>
+                </div>
+                <hr/>
+                <div class="row" id="all_hotels_reserves">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-10">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                گزارش کلی رزروها
+                            </div>
+                            <div class="panel-body">
+                                <table class="table">
+                                    <thead>
+                                        <th>نام هتل</th>
+                                        <th>تعداد ستاره ها</th>
+                                        <th>تعداد رزروهای سال جاری</th>
+                                    </thead>
+                                    <tbody>
+                                        {% for hotel in hotels %}
+                                            <tr>
+                                                <th>{{ hotel.name }}</th>
+                                                <th>
+                                                    {% for i in "12345" %}
+                                                        {% if forloop.counter <= hotel.star_number %}
+                                                            <span class="glyphicon glyphicon-star"></span>
+                                                        {% else %}
+                                                            <span class="glyphicon glyphicon-star-empty"></span>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </th>
+                                                <th>{{ hotel.reserves }}</th>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <hr>
+
+                        <div class="row">
+                            <div class="col-md-2"></div>
+                            <div class="col-md-8">
+                                <canvas id="myChart1" width="500" height="500"></canvas>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-md-2"></div>
+                            <div class="col-md-8">
+                                <canvas id="myChart2" width="500" height="500"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="income">
+                <br/>
+                <div class="row">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-6">
+                        <label>برای نمایش دقیق گزارش، هتل مورد نظر را انتخاب کنید:</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <select class="form-control" id="hotel_id">
+                                {% for hotel in hotels %}
+                                   <option value={{ hotel.id }}>{{ hotel.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2"></div>
+                    <div class="col-md-2">
+                        <a onclick="report2()" class="btn btn-primary">دریافت گزارش</a>
+                    </div>
+                </div>
+                <hr/>
+                <div class="row" id="all_hotels_income">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-10">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                گزارش کلی درآمدها
+                            </div>
+                            <div class="panel-body">
+                                <table class="table">
+                                    <thead>
+                                        <th>نام هتل</th>
+                                        <th>تعداد ستاره ها</th>
+                                        <th>درآمد کلی هتل</th>
+                                    </thead>
+                                    <tbody>
+                                        {% for hotel in hotels %}
+                                            <tr>
+                                                <th>{{ hotel.name }}</th>
+                                                <th>
+                                                    {% for i in "12345" %}
+                                                        {% if forloop.counter <= hotel.star_number %}
+                                                            <span class="glyphicon glyphicon-star"></span>
+                                                        {% else %}
+                                                            <span class="glyphicon glyphicon-star-empty"></span>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </th>
+                                                <th>{{ hotel.income }}</th>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <hr>
+                    <div class="row">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-8">
+                            <canvas id="myChart3" width="500" height="500"></canvas>
+                        </div>
+                        <div class="col-md-2"></div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="comments">
+                <br/>
+                <div class="row">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-10">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                گزارش کلی نظرات ثبت شده
+                            </div>
+                            <div class="panel-body">
+                                <table class="table">
+                                    <thead>
+                                        <th>نام هتل</th>
+                                        <th>تعداد ستاره ها</th>
+                                        <th>تعداد نظرات ثبت شده</th>
+                                        <th>میانگین امتیاز کاربران</th>
+                                        <th>رتبه هتل</th>
+                                    </thead>
+                                    <tbody>
+                                        {% for hotel in hotels %}
+                                            <tr>
+                                                <th>{{ hotel.name }}</th>
+                                                <th>
+                                                    {% for i in "12345" %}
+                                                        {% if forloop.counter <= hotel.star_number %}
+                                                            <span class="glyphicon glyphicon-star"></span>
+                                                        {% else %}
+                                                            <span class="glyphicon glyphicon-star-empty"></span>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </th>
+                                                <th>{{ hotel.critic_number }}</th>
+                                                <th>
+                                                    {% for i in "12345" %}
+                                                        {% if forloop.counter <= hotel.average_star_number %}
+                                                            <span class="glyphicon glyphicon-star"></span>
+                                                        {% else %}
+                                                            <span class="glyphicon glyphicon-star-empty"></span>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </th>
+                                                <th>{{ hotel.grade }}</th>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

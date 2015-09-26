@@ -1,0 +1,86 @@
+{% load bootstrap3 %}
+{% load staticfiles %}
+
+
+
+        <div class="row">
+            <div class="col-md-6">
+            <form role="form" action="." method="post" enctype="multipart/form-data" id="myForm">
+
+	            {% csrf_token %}
+                {% if form.non_field_errors %}
+                <p class="error">
+		        {% for error in form.non_field_errors %}
+		            {{ error }}
+		        {% endfor %}
+                </p>
+                {% endif %}
+                {% for field in form %}
+
+                        <div class="form-group">
+		                   {% bootstrap_field field %}
+		                    {% if field.errors %}
+		                        <p class="error">
+		                        {% for error in field.errors %}
+		                        {{ error }}
+		                        {% endfor %}
+		                        </p>
+		                    {% endif %}
+                        </div>
+
+                {% endfor %}
+
+
+
+        </form>
+
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-9"></div>
+             <div class="col-md-3"><input type="submit" form="myForm" style="width: 100%" class="btn btn-default" value={{ value }}></div>
+
+        </div>
+
+        <hr>
+
+
+{#            <form action="" method="post" id="add-product"#}
+{#                  enctype="multipart/form-data">#}
+{#                <div class="col-md-7">#}
+{##}
+{#                    {% csrf_token %}#}
+{#                    {% if form.non_field_errors %}#}
+{#                    <p class="error">#}
+{#		                {% for error in form.non_field_errors %}#}
+{#		                {{ error }}#}
+{#		                {% endfor %}#}
+{#                    </p>#}
+{#                    {% endif %}#}
+{#                    {% for field in form %}#}
+{#                        {% if field.name != 'image' %}#}
+{#                            {% bootstrap_field field %}#}
+{#                        {% endif %}#}
+{#                    {% endfor %}#}
+{#                </div>#}
+{#                <div class="col-md-5">#}
+{#                    {% bootstrap_field form.image %}#}
+{#                    <div>#}
+{#                        <img id="to-be-cropped" src="">#}
+{#                    </div>#}
+{#                    <input type="hidden" name="x1" value="[[image.x1]]">#}
+{#                    <input type="hidden" name="y1" value="[[image.y1]]">#}
+{#                    <input type="hidden" name="width" value="[[image.width]]">#}
+{#                    <input type="hidden" name="height" value="[[image.height]]">#}
+{#                </div>#}
+{#            </form>#}
+{#        </div>#}
+{#        <hr>#}
+{#        <div class="alert alert-warning" ng-if="hasImage == false">#}
+{#            برای افزودن محصول ابتدا تصویر محصول را آپلود کنید.#}
+{#        </div>#}
+{#        <div class="alert alert-warning" ng-if="hasImage !== false && image.x1==null">#}
+{#            پیش از افزودن تصویر را کراپ کنید#}
+{#        </div>#}
+{#        <input type="submit" form="add-product" class="btn btn-primary" value="افزودن">#}

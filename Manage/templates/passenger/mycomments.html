@@ -1,0 +1,41 @@
+{% extends "secondBase.html" %}
+{% load bootstrap3 %}
+{% load staticfiles %}
+
+{% block menu %}
+    {% include 'passenger/menu.html' with active='comments'%}
+{% endblock %}
+
+{% block content %}
+<div class="panel panel-default">
+    <div class="panel-heading">
+نظرات من
+    </div>
+    <div class="panel-body">
+        <table class="table">
+            <thead>
+                <th class="col-md-1">هتل</th>
+                <th class="col-md-2">امتیاز داده شده</th>
+                <th class="col-md-9">متن نظر</th>
+            </thead>
+            <tbody>
+            {% for comment in comments %}
+                <tr>
+                    <th>{{ comment.hotel }}</th>
+                    <th>
+                        {% for i in "12345" %}
+                            {% if forloop.counter < comment.star_number %}
+                                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                            {% else %}
+                                <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
+                            {% endif %}
+                        {% endfor %}
+                    </th>
+                    <th>{{ comment.text }}</th>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

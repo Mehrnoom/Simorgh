@@ -1,0 +1,22 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        مدیریت
+    </div>
+    <div class="panel-body list">
+        <a href= {% url 'profile' %} {% if active == 'profile' %} class="active" {% endif %}>
+            پروفایل من
+        </a>
+        <a href={% url 'hotels_list' %} {% if active == 'hotels_list' %} class="active" {% endif %}>
+مدیریت هتل ها
+        </a>
+        <a href={% url 'add_hotel' %} {% if active == 'add_hotel' %} class="active" {% endif %}>
+اضافه کردن هتل
+        </a>
+        <a href={% url 'commision' %} {% if active == 'commision' %} class="active" {% endif %}>
+پرداخت کارمزد
+        </a>
+        <a href={% url 'report' %} {% if active == 'report' %} class="active" {% endif %}>
+گزارش گیری
+        </a>
+    </div>
+</div>

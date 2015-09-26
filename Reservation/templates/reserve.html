@@ -1,0 +1,167 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load bootstrap3 %}
+
+{% block js %}
+    {{ block.super }}
+    <script src="{% static 'js/calendar/jalali.js' %}" xmlns="http://www.w3.org/1999/html"></script>
+    <script src="{% static 'js/calendar/calendar.js' %}"></script>
+    <script src="{% static  'js/calendar/calendar-setup.js' %}"></script>
+    <script src="{% static  'js/calendar/calendar-fa.js' %}"></script>
+
+    <script>
+        function cancleReservation(reserve_id) {
+            $.ajax({
+                url: '/simorgh/cancle/reservation/',
+                method: 'GET',
+                dataType: 'json',
+                data : {
+                    "reserve_id" : reserve_id
+
+                },
+                success: function(data){
+                    if(data == 1) {
+                        child = document.getElementById('my-buttons')
+                        child.parentNode.removeChild(child)
+                    }
+                }
+            })
+        }
+
+
+        function formController($scope) {
+            var curDate = new Date()
+            var date1 = gregStrToJalali(curDate.getFullYear() + '/' + (curDate.getMonth() + 1) + '/' + curDate.getDate());
+            $scope.from_date = date1[0] + '/' + date1[1] + '/' + date1[2];
+            var date2 = gregStrToJalali(curDate.getFullYear() + '/' + (curDate.getMonth() + 1) + '/' + (curDate.getDate() + 1));
+            $scope.to_date = date2[0] + '/' + date2[1] + '/' + date2[2];
+
+            $scope.cost = function() {
+                var dif = getDiffJallali($scope.from_date, $scope.to_date)
+                if (dif <= 0)
+                    return "تاریخ وارد شده نا معتبر می باشد."
+                else {
+                    var res = "هزینه رزرو : "
+                    res += dif * {{ cost }};
+
+                    return res;
+                }
+            }
+
+            $scope.reserve = function() {
+                $.ajax({
+            url: "/simorgh/ajax/hotelserver",
+            type: 'get',
+            dataType: 'json',
+            data: {
+
+            },
+            success: function(data){
+{#                console.log(data + " "+ $('#total-cost').text().split(':')[1])#}
+                if(data > 0) {
+                    console.log()
+                    $.ajax({
+                        url: '/simorgh/ajax/reserve',
+                        methof: 'GET',
+                        dataType: 'json',
+                        data : {
+                            "from_date" : $scope.from_date,
+                            "to_date": $scope.to_date,
+                            "roomId": {{ room_id }},
+                            "cost": $('#total-cost').text().split(':')[1]
+                        },
+                        success: function(data){
+                            if(data != -1) {
+                                $('#message').append('<p>رزرو شما با موفقیت انجام شد. لطفا تا سی دقیقه آینده نسبت به پرداخت آن اقدام فرمایید.</p>')
+                                $('#button1').append('<a onclick="cancleReservation(' + data +')"class="btn btn-primary" >لغو رزرو </a>')
+                                $('#button2').append('<a href="/simorgh/bank/1/' + data + '" class="btn btn-primary" >پرداخت </a>')
+                            }
+                        }
+                    })
+                }
+                else {
+                    $('#message').append('<p>در تاریخ خواسته شده تمامی اتاق ها پر می باشند.</p>')
+                }
+
+            },
+            error: function() {
+                alert("no")
+            }
+            // ...
+        });
+        }
+
+        }
+    </script>
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+        اطلاعات رزرو
+                </div>
+                <div class="panel-body">
+                    <div ng-app="" ng-controller="formController">
+                        <form method="post" id="reserve" ng-submit="reserve()">
+                            {% csrf_token %}
+                            <div class="form-group row ">
+                                <div class="col-md-5">
+                                <input id="date_input_1" type="text" ng-model="from_date" class="form-control" placeholder="?? ?????"><img id="date_btn_1" src="{% static 'img/cal.png' %}" ></input>
+                                    <script type="text/javascript">
+                                        Calendar.setup({
+                                            inputField     :    "date_input_1",   // id of the input field
+                                            button         :    "date_btn_1",   // trigger for the calendar (button ID)
+                                            ifFormat       :    "%Y/%m/%d",       // format of the input field
+                                            dateType	   :	'jalali',
+                                            weekNumbers    : false
+                                        });
+                                    </script>
+                                </div>
+
+                                <div class="col-md-5">
+                                <input id="date_input_2" type="text" ng-model="to_date" class="form-control" placeholder="?? ?????"><img id="date_btn_2" src="{% static 'img/cal.png' %}" >
+                                    <script type="text/javascript">
+                                        Calendar.setup({
+                                            inputField     :    "date_input_2",   // id of the input field
+                                            button         :    "date_btn_2",   // trigger for the calendar (button ID)
+                                            ifFormat       :    "%Y/%m/%d",       // format of the input field
+                                            dateType	   :	'jalali',
+                                            weekNumbers    : false
+                                        });
+                                    </script>
+                                </div>
+                            </div>
+                        </form>
+                        <br/>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div><p id="total-cost">  [[cost()]]</p></div>
+                            </div>
+                            <div class="col-md-4">
+                                <a ng-click="reserve()" class="btn btn-primary" >رزرو</a>
+                            </div>
+                        </div>
+                    </div>
+                    <hr/>
+                    <div id="my-buttons">
+                    <div id="message"></div>
+                    <br/>
+                    <div class="row">
+                        <div class="col-md-8"></div>
+                        <div class="col-md-2">
+                            <div id="button1"></div>
+                        </div>
+                        <div class="col-md-2">
+                            <div id="button2"></div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+{% endblock %}
